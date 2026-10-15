@@ -1,0 +1,16 @@
+{
+ "tipo": "auditoria",
+ "cliente": "Cliente Exemplo",
+ "titulo": "Apresentações do trimestre",
+ "data": "2026-01-15",
+ "pasta": "Projetos/Cliente Exemplo/Apresentações",
+ "pasta_url": "",
+ "base_url": "",
+ "escopo": "3 arquivos .pptx, 40 slides.",
+ "metodo": "Texto, fontes e cores extraídos por slide e cruzados com as regras do cliente.",
+ "observacao_geral": "Exemplo fictício para mostrar o formato.",
+ "achados": [
+  {"arquivo": "Deck_Exemplo.pptx", "slide": "4", "regra": "TXT-08", "sev": "AJUSTAR", "tipo": "Copy", "trecho": "Como está a sua operação?", "problema": "Expressão proibida pelo guia do cliente.", "correcao": "Como está o seu negócio?"},
+  {"arquivo": "Deck_Exemplo.pptx", "slide": "9", "regra": "MAR-06", "sev": "BLOQUEIA", "tipo": "Conteúdo", "trecho": "Fundo laranja no mockup do post", "problema": "Cor fora da paleta permitida como fundo.", "correcao": "Trocar o fundo pela cor principal do cliente."}
+ ]
+}
