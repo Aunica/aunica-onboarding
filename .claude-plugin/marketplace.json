@@ -1,0 +1,11 @@
+{
+  "name": "aunica-labs",
+  "owner": { "name": "aunica Labs" },
+  "plugins": [
+    {
+      "name": "aunica-onboarding",
+      "source": "./",
+      "description": "Onboarding de clientes: diretrizes, criação e revisão de peças, auditoria de pastas e portal por cliente."
+    }
+  ]
+}

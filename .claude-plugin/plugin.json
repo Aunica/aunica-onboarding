@@ -1,0 +1,8 @@
+{
+  "name": "aunica-onboarding",
+  "version": "0.3.0",
+  "description": "Onboarding de clientes da aunica: transforma o material de referência do cliente em diretrizes, cria e revisa cada tipo de peça (post, e-mail, artigo, apresentação, arte, vídeo, LinkedIn de executivo, SAC), audita pastas e publica o portal de diretrizes. Uma iniciativa aunica Labs.",
+  "author": { "name": "aunica Labs" },
+  "homepage": "https://github.com/Aunica/aunica-onboarding",
+  "keywords": ["onboarding", "diretrizes", "brand", "revisao", "auditoria"]
+}
