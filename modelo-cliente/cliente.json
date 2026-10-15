@@ -1,0 +1,30 @@
+{
+  "cliente": "Nome do Cliente",
+  "slug": "nome-do-cliente",
+  "contato_marketing": "",
+  "aprovacao_final": "",
+  "referencias": [
+    {
+      "nome": "Pasta de marca enviada pelo cliente",
+      "url": "",
+      "onde": "Google Drive | SharePoint | OneDrive",
+      "conteudo": "manual de marca, guias, logos, fotos",
+      "lida_em": ""
+    }
+  ],
+  "pecas_para_validar": [
+    {
+      "nome": "Apresentações",
+      "url": "",
+      "onde": "SharePoint",
+      "tipo": "apresentacao"
+    },
+    {
+      "nome": "Redes sociais / criação",
+      "url": "",
+      "onde": "SharePoint",
+      "tipo": "post"
+    }
+  ],
+  "fora_de_escopo": []
+}
