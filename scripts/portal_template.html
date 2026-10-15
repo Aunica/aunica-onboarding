@@ -1,0 +1,210 @@
+<title>Diretrizes __CLIENTE__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: ferramenta de consulta. Cabeçalho fixo com abas, barra de filtros, listas densas agrupadas. */
+/* Layout: ferramenta de consulta da aunica. Faixa em degradê da marca no topo, abas, filtros e listas densas. */
+:root{
+  --bg:#F6F6F9; --surface:#FFFFFF; --ink:#1E1E1E; --muted:#5D5B66; --line:#E4E3EA;
+  --accent:#5B0FD9; --accent-soft:#EFE9FD; --cyan:#00B8C2; --teal:#007F87;
+  --grad:linear-gradient(90deg,#5B0FD9 0%,#8E2DE2 35%,#00D4DC 100%);
+  --bloq:#B4233A; --bloq-bg:#FBE9EC; --ajus:#8A5A00; --ajus-bg:#FBF1DC;
+  --conf:#1D5FA8; --conf-bg:#E6EEF8; --info:#5D5B66; --info-bg:#EEEDF2;
+  --f-display:"Sora", "Helvetica Neue", Arial, sans-serif;
+  --f-body:"DM Sans", "Segoe UI", Arial, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111016; --surface:#1A1920; --ink:#F1F0F5; --muted:#A9A6B5; --line:#2E2C38;
+  --accent:#A989FF; --accent-soft:#2A2145; --cyan:#3FE3EA; --teal:#5FD6DC;
+  --bloq:#F2798C; --bloq-bg:#3A1A22; --ajus:#E8B85A; --ajus-bg:#352A14;
+  --conf:#8DB6EC; --conf-bg:#1A2A40; --info:#A9A6B5; --info-bg:#27252F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111016; --surface:#1A1920; --ink:#F1F0F5; --muted:#A9A6B5; --line:#2E2C38;
+  --accent:#A989FF; --accent-soft:#2A2145; --cyan:#3FE3EA; --teal:#5FD6DC;
+  --bloq:#F2798C; --bloq-bg:#3A1A22; --ajus:#E8B85A; --ajus-bg:#352A14;
+  --conf:#8DB6EC; --conf-bg:#1A2A40; --info:#A9A6B5; --info-bg:#27252F; color-scheme:dark}
+.logo-dark{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .logo-dark{display:block}:root:not([data-theme="light"]) .logo-light{display:none}}
+:root[data-theme="dark"] .logo-dark{display:block}:root[data-theme="dark"] .logo-light{display:none}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+.bar>*,.wrap>*{min-width:0}
+main{overflow-wrap:anywhere}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--surface);box-shadow:inset 0 4px 0 0 transparent;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.top .wrap{padding-block:14px 0;display:grid;gap:10px}
+.gradbar{height:4px;background:var(--grad)}
+.brand-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
+.logo{height:30px;width:auto}
+.plug{font:600 .72rem var(--f-display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+footer.foot{border-top:1px solid var(--line);background:var(--surface)}
+footer.foot .wrap{padding-block:18px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;color:var(--muted);font-size:.86rem}
+footer.foot img{height:18px;width:auto}
+.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+h1{font-family:var(--f-display);font-weight:800;font-size:1.65rem;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.meta{color:var(--muted);font-size:.86rem}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs button{font:600 .92rem var(--f-display);background:none;border:0;color:var(--muted);padding:10px 12px 12px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
+nav.tabs .n{background:var(--accent-soft);font:500 .74rem var(--f-mono);background:var(--accent-soft);color:var(--accent);border-radius:20px;padding:1px 7px;margin-left:6px}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main .wrap{padding-block:20px 48px;display:grid;gap:18px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.bar input[type=search]{flex:1 1 240px;min-width:0;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.bar select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);max-width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:600 .8rem var(--f-display);letter-spacing:.02em;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:20px;padding:6px 11px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.count{font-size:.85rem;color:var(--muted)}
+.group{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.group h2{font:700 .78rem var(--f-display);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.group h2 a{color:var(--accent);text-transform:none;letter-spacing:0;font-size:.92rem;word-break:break-word}
+.rule{display:grid;grid-template-columns:86px 104px 1fr;gap:6px 14px;padding:12px 16px;border-top:1px solid var(--line);align-items:start}
+.group h2 + .rule{border-top:0}
+.rule.flash{background:var(--accent-soft)}
+.id{font:500 .82rem var(--f-mono);color:var(--accent)}
+.txt{min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tag{font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 6px}
+.tag.aun{color:var(--teal);border-color:var(--teal)}
+.pill{font:700 .7rem var(--f-display);letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:3px 7px;justify-self:start}
+.s-BLOQUEIA{color:var(--bloq);background:var(--bloq-bg)}
+.s-AJUSTAR{color:var(--ajus);background:var(--ajus-bg)}
+.s-CONFIRMAR{color:var(--conf);background:var(--conf-bg)}
+.s-INFO{color:var(--info);background:var(--info-bg)}
+.find{display:grid;grid-template-columns:96px 1fr;gap:6px 14px;padding:14px 16px;border-top:1px solid var(--line)}
+.group h2 + .find{border-top:0}
+.find .left{display:grid;gap:6px;align-content:start}
+.slide{font:500 .8rem var(--f-mono);color:var(--muted)}
+.find .body{min-width:0;display:grid;gap:6px}
+.quote{border-left:3px solid var(--line);padding:2px 10px;color:var(--muted);font-style:italic}
+.fix{background:var(--accent-soft);border-radius:6px;padding:8px 10px}
+.fix b{font-family:var(--f-display);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);display:block}
+.linkrule{font:500 .8rem var(--f-mono);color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:2px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.kpi[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.kpi strong{font:800 1.6rem var(--f-display);font-variant-numeric:tabular-nums}
+.kpi span{font-size:.82rem;color:var(--muted)}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:6px;max-width:80ch}
+.note p{margin:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.col h3{font:800 1rem var(--f-display);margin:0 0 8px}
+.col ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.col li span{font:500 .75rem var(--f-mono);color:var(--muted);margin-left:4px}
+.prose{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;max-width:80ch}
+.prose h3{font:800 1.05rem var(--f-display);margin:14px 0 4px}
+.prose h3:first-child{margin-top:0}
+.prose ul{margin:4px 0;padding-left:18px}
+.empty{color:var(--muted);padding:18px 16px}
+@media (max-width:640px){
+  .rule{grid-template-columns:auto 1fr}.rule .txt{grid-column:1/-1}
+  .find{grid-template-columns:1fr}.find .left{grid-auto-flow:column;justify-content:start;align-items:center}
+}
+@media (prefers-reduced-motion:no-preference){.rule.flash{transition:background .6s}}
+</style>
+<!--BODY-->
+<header class="top"><div class="gradbar"></div><div class="wrap">
+  <div class="brand-row"><span><img class="logo logo-light" src="__LOGO_LIGHT__" alt="aunica"><img class="logo logo-dark" src="__LOGO_DARK__" alt="aunica"></span><span class="plug">Onboarding de clientes</span></div>
+  <div class="brand"><h1>Diretrizes <span id="cli"></span></h1><div class="meta" id="meta"></div></div>
+  <nav class="tabs" role="tablist" aria-label="Seções">
+    <button role="tab" id="t-regras" aria-selected="true" data-tab="regras">Regras<span class="n" id="n-regras"></span></button>
+    <button role="tab" id="t-resumo" aria-selected="false" data-tab="resumo">Pode e não pode</button>
+    <button role="tab" id="t-auditorias" aria-selected="false" data-tab="auditorias">Revisões e auditorias<span class="n" id="n-aud"></span></button>
+    <button role="tab" id="t-sobre" aria-selected="false" data-tab="sobre">Público e aprovação</button>
+  </nav>
+</div></header>
+<main>
+<section class="wrap" id="p-regras">
+  <div class="bar">
+    <input type="search" id="q" placeholder="Buscar regra: laranja, CTA, GPTW, taHtinho...">
+    <div class="chips" id="sevchips"></div>
+    <select id="tipo" aria-label="Tipo de peça"><option value="">Todo tipo de peça</option></select>
+    <select id="bloco" aria-label="Bloco"><option value="">Todos os blocos</option></select>
+  </div>
+  <div class="count" id="rcount"></div>
+  <div id="rlist" style="display:grid;gap:14px"></div>
+</section>
+<section class="wrap" id="p-resumo" hidden>
+  <div class="cols" id="resumo"></div>
+</section>
+<section class="wrap" id="p-auditorias" hidden>
+  <div class="bar" id="audsel-bar"><select id="audsel" aria-label="Auditoria"></select></div>
+  <div class="note" id="audnote"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="bar">
+    <input type="search" id="aq" placeholder="Buscar no achado, trecho ou correção">
+    <select id="aarq" aria-label="Arquivo"><option value="">Todos os arquivos</option></select>
+    <select id="atipo" aria-label="Natureza"><option value="">Copy, recomendação e análise</option></select>
+  </div>
+  <div class="count" id="acount"></div>
+  <div id="alist" style="display:grid;gap:14px"></div>
+</section>
+<section class="wrap" id="p-sobre" hidden>
+  <div class="cols" id="sobre"></div>
+  <div class="prose" id="personas"></div>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>Plugin aunica-onboarding, uma iniciativa</span><img src="__LOGO_LABS__" alt="aunica Labs"><span id="gerado"></span></div></footer>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const D=JSON.parse(document.getElementById('data').textContent);
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SEV=['BLOQUEIA','AJUSTAR','CONFIRMAR'], SEVL={BLOQUEIA:'Bloqueia',AJUSTAR:'Ajustar',CONFIRMAR:'Confirmar',INFO:'Informativo'};
+$('#cli').textContent=D.cliente;$('#gerado').textContent=D.gerado?(' · atualizado em '+D.gerado.split('-').reverse().join('/')):'';
+$('#meta').textContent=[D.fm.lido_em&&('Lido em '+D.fm.lido_em.split('-').reverse().join('/')),D.fm.aprovacao_final&&('Aprovação: '+D.fm.aprovacao_final)].filter(Boolean).join(' · ');
+$('#n-regras').textContent=D.regras.length;
+const totalAch=D.auditorias.reduce((a,x)=>a+x.achados.length,0);$('#n-aud').textContent=totalAch;
+/* tabs */
+function show(t){document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));['regras','resumo','auditorias','sobre'].forEach(p=>$('#p-'+p).hidden=p!==t);try{localStorage.setItem('tab',t)}catch(e){}}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{show(b.dataset.tab);history.replaceState(null,'','#'+b.dataset.tab)});
+let start=(location.hash||'').slice(1);if(!['regras','resumo','auditorias','sobre'].includes(start)){try{start=localStorage.getItem('tab')||'regras'}catch(e){start='regras'}}show(start);
+/* regras */
+let sevF='';
+const sc=$('#sevchips');['',...SEV].forEach(s=>{const b=document.createElement('button');b.className='chip';b.textContent=s?SEVL[s]:'Todas';b.setAttribute('aria-pressed',s===sevF);b.onclick=()=>{sevF=s;sc.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderR()};sc.appendChild(b)});
+[...new Set(D.regras.flatMap(r=>r.tipos))].sort().forEach(t=>$('#tipo').insertAdjacentHTML('beforeend',`<option>${esc(t)}</option>`));
+[...new Set(D.regras.map(r=>r.bloco))].forEach(t=>$('#bloco').insertAdjacentHTML('beforeend',`<option>${esc(t)}</option>`));
+const norm=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function renderR(){const q=norm($('#q').value.trim()),tp=$('#tipo').value,bl=$('#bloco').value;
+ const rs=D.regras.filter(r=>(!sevF||r.sev===sevF)&&(!tp||r.tipos.includes(tp))&&(!bl||r.bloco===bl)&&(!q||norm(r.id+' '+r.texto+' '+r.bloco).includes(q)));
+ $('#rcount').textContent=rs.length+' de '+D.regras.length+' regras';
+ const g={};rs.forEach(r=>(g[r.bloco]=g[r.bloco]||[]).push(r));
+ $('#rlist').innerHTML=Object.keys(g).length?Object.entries(g).map(([b,list])=>`<div class="group"><h2>${esc(b)}<span>${list.length}</span></h2>${list.map(r=>`<div class="rule" id="r-${r.id}"><span class="id">${r.id}</span><span class="pill s-${r.sev}">${SEVL[r.sev]}</span><div class="txt">${esc(r.texto)}<div class="tags">${r.tipos.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}${r.aunica?'<span class="tag aun">recomendação aunica</span>':''}</div></div></div>`).join('')}</div>`).join(''):'<div class="group"><div class="empty">Nenhuma regra com esses filtros. Tente outra palavra ou limpe os filtros.</div></div>';}
+['q','tipo','bloco'].forEach(i=>$('#'+i).addEventListener('input',renderR));renderR();
+function goRule(id){show('regras');sevF='';sc.querySelectorAll('.chip').forEach((c,i)=>c.setAttribute('aria-pressed',i===0));$('#q').value='';$('#tipo').value='';$('#bloco').value='';renderR();const el=document.getElementById('r-'+id);if(el){el.scrollIntoView({block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600)}}
+/* resumo */
+const col=(t,list)=>`<div class="col"><h3>${t}</h3><ul>${list.map(r=>`<li>${esc(r.texto.split('. ')[0].replace(/\.$/,''))}.<span>${r.id}</span></li>`).join('')}</ul></div>`;
+$('#resumo').innerHTML=col('Não pode',D.regras.filter(r=>r.sev==='BLOQUEIA'))+col('Precisa de ok do cliente',D.regras.filter(r=>r.sev==='CONFIRMAR'))+col('Deve ter',D.regras.filter(r=>r.sev==='AJUSTAR'));
+/* auditorias */
+let aIdx=0,aSev='';
+if(D.auditorias.length<2)$('#audsel-bar').hidden=true;
+D.auditorias.forEach((a,i)=>$('#audsel').insertAdjacentHTML('beforeend',`<option value="${i}">${esc(a.data.split('-').reverse().join('/'))} · ${esc(a.titulo)}</option>`));
+$('#audsel').onchange=e=>{aIdx=+e.target.value;aSev='';setupA()};
+function fileUrl(a,n){return a.base_url?a.base_url+n.split('/').map(encodeURIComponent).join('/'):''}
+function setupA(){const a=D.auditorias[aIdx];if(!a){$('#p-auditorias').innerHTML='<div class="note"><p>Nenhuma revisão ou auditoria ainda. As revisões feitas pelo plugin aparecem aqui automaticamente.</p></div>';return}
+ $('#audnote').innerHTML=`<p><b>${esc(a.titulo)}</b> · ${esc(a.data.split('-').reverse().join('/'))}${a.pasta_url?` · <a href="${esc(a.pasta_url)}" target="_blank" rel="noopener">abrir pasta</a>`:''}</p><p>${esc(a.escopo)}</p><p>${esc(a.observacao_geral||'')}</p>`;
+ const cnt={};a.achados.forEach(x=>cnt[x.sev]=(cnt[x.sev]||0)+1);
+ $('#kpis').innerHTML=[['','Todos os achados',a.achados.length],...['BLOQUEIA','AJUSTAR','CONFIRMAR','INFO'].filter(s=>cnt[s]).map(s=>[s,SEVL[s],cnt[s]])].map(([s,l,n])=>`<button class="kpi" data-s="${s}" aria-pressed="${s===aSev}"><strong>${n}</strong><span>${l}</span></button>`).join('');
+ $('#kpis').querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{aSev=b.dataset.s;$('#kpis').querySelectorAll('.kpi').forEach(k=>k.setAttribute('aria-pressed',k===b));renderA()});
+ $('#aarq').innerHTML='<option value="">Todos os arquivos</option>'+[...new Set(a.achados.map(x=>x.arquivo))].map(f=>`<option>${esc(f)}</option>`).join('');
+ $('#atipo').innerHTML='<option value="">Copy, recomendação e análise</option>'+[...new Set(a.achados.map(x=>x.tipo))].map(f=>`<option>${esc(f)}</option>`).join('');
+ renderA()}
+function renderA(){const a=D.auditorias[aIdx];if(!a)return;const q=norm($('#aq').value.trim()),f=$('#aarq').value,t=$('#atipo').value;
+ const xs=a.achados.filter(x=>(!aSev||x.sev===aSev)&&(!f||x.arquivo===f)&&(!t||x.tipo===t)&&(!q||norm([x.trecho,x.problema,x.correcao,x.regra].join(' ')).includes(q)));
+ $('#acount').textContent=xs.length+' de '+a.achados.length+' achados';
+ const g={};xs.forEach(x=>(g[x.arquivo]=g[x.arquivo]||[]).push(x));
+ $('#alist').innerHTML=Object.keys(g).length?Object.entries(g).map(([file,list])=>{const u=fileUrl(a,file);return `<div class="group"><h2>${u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(file)}</a>`:esc(file)}<span>${list.length} achado${list.length>1?'s':''}</span></h2>${list.map(x=>`<div class="find"><div class="left"><span class="slide">slide ${esc(x.slide)}</span><span class="pill s-${x.sev}">${SEVL[x.sev]}</span>${/^[A-Z]{2,5}-\d{2}$/.test(x.regra)?`<button class="linkrule" data-r="${x.regra}">${x.regra}</button>`:''}</div><div class="body"><div class="tags"><span class="tag">${esc(x.tipo)}</span></div><div class="quote">${esc(x.trecho)}</div><div>${esc(x.problema)}</div><div class="fix"><b>Como fica</b>${esc(x.correcao)}</div></div></div>`).join('')}</div>`}).join(''):'<div class="group"><div class="empty">Nenhum achado com esses filtros.</div></div>';
+ $('#alist').querySelectorAll('.linkrule').forEach(b=>b.onclick=()=>goRule(b.dataset.r));}
+['aq','aarq','atipo'].forEach(i=>$('#'+i).addEventListener('input',renderA));setupA();
+/* sobre */
+const fm=D.fm;
+$('#sobre').innerHTML=`<div class="col"><h3>Fluxo de aprovação</h3><ul>${D.fluxo.map(l=>`<li>${esc(l)}</li>`).join('')}</ul></div><div class="col"><h3>Contatos e canais</h3><ul>${[fm.contato_marketing&&('Marketing: '+fm.contato_marketing),fm.redes&&('Redes: '+fm.redes),fm.segmento&&('Segmento: '+fm.segmento),fm.fora_de_escopo&&('Fora do escopo: '+fm.fora_de_escopo)].filter(Boolean).map(l=>`<li>${esc(l)}</li>`).join('')}</ul></div>`;
+$('#personas').innerHTML=D.personas.split('\n').map(l=>l.startsWith('# ')?'':l.startsWith('## ')?`<h3>${esc(l.slice(3))}</h3>`:l.startsWith('- ')?`<ul><li>${esc(l.slice(2))}</li></ul>`:l.trim()?`<p>${esc(l)}</p>`:'').join('').replace(/<\/ul><ul>/g,'');
+</script>
