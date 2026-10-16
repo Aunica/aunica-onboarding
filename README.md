@@ -10,8 +10,6 @@ Transforma o material de referência de um cliente (manual de marca, guias de co
 2. Instalar o plugin **aunica-onboarding**.
 3. Conectar a pasta **Onboarding Clientes** (onde ficam os dados dos clientes). Ver `config/workspace.md`.
 
-Também dá para instalar pelo arquivo `.plugin` gerado a partir deste repositório.
-
 ## O plugin não guarda dados de cliente
 
 Este repositório é público e tem só o motor. Regras, referências, revisões e auditorias de cada cliente ficam na pasta **Onboarding Clientes** da aunica:
