@@ -12,10 +12,8 @@ Onboarding Clientes/
   clientes/<slug>/
     cliente.json          onde está o material de referência e onde estão as peças a validar
     diretrizes/           regras.md, personas.md, fontes.md, portal-<slug>.html
-    revisoes/             uma revisão por peça (.md para ler, .json para o portal)
-    auditorias/           uma auditoria por pasta (.json)
-    reports/              relatórios e briefings
-    historico/log.md      uma linha por evento
+    validacoes/           uma pasta por validação: "AAAA-MM-DD HHhMM - assunto/" com relatorio.html, pecas-corrigidas/ e dados.json
+    criacoes/             peças e briefings criados pelo plugin, um arquivo por pedido
 ```
 
 ## Como o plugin acha a pasta
