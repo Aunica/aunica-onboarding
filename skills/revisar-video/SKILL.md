@@ -25,5 +25,5 @@ VID, MAR, IMG, SEL, TXT (legenda e fala), SEN.
 
 ## Entrega
 Parecer no formato de `metodo/parecer.md`. Achados com minuto e segundo, e lista de ajustes para a edição.
-Gravar a revisão em `<workspace>/clientes/<slug>/revisoes/` (um .md para ler e um .json para o portal, formato em `metodo/parecer.md`), acrescentar uma linha em `historico/log.md` e atualizar o portal do cliente (função `portal-cliente`).
+Registrar a validação como manda `metodo/parecer.md`: pasta nova em `<workspace>/clientes/<slug>/validacoes/` com `relatorio.html`, `pecas-corrigidas/` (a versão corrigida) e `dados.json`, e atualizar o portal do cliente (função `portal-cliente`).
 Fechar com a pergunta de próximo passo.
