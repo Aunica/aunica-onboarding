@@ -3,18 +3,21 @@
 
 Uso:
   python3 gerar_portal.py <pasta_do_cliente> <saida.html> [--standalone]
+  python3 gerar_portal.py <pasta_do_cliente> --relatorio "<pasta da validação>"
 
 <pasta_do_cliente> é a pasta do cliente no OneDrive, por exemplo
 "Onboarding Clientes/clientes/<cliente>". Ela precisa ter:
   diretrizes/regras.md      (obrigatório)
   diretrizes/personas.md    (opcional)
-  auditorias/*.json         (opcional, gerados por auditar-pasta)
-  revisoes/*.json           (opcional, gerados pelas funções revisar-*)
+  validacoes/<AAAA-MM-DD HHhMM - assunto>/dados.json   (uma pasta por validação)
+
+--relatorio gera o relatorio.html dentro da pasta da validação informada.
 
 --standalone gera documento completo (doctype, head, body) para abrir direto
 do OneDrive. Sem a flag, gera o corpo pronto para publicar como página.
 """
 import base64, datetime, html, json, pathlib, re, sys
+from urllib.parse import quote
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -70,25 +73,30 @@ def data_uri(name):
     return "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode() if p.exists() else ""
 
 
-def main():
-    args = sys.argv[1:]
-    standalone = "--standalone" in args
-    args = [a for a in args if a != "--standalone"]
-    cdir, out = pathlib.Path(args[0]), pathlib.Path(args[1])
+def carregar_validacoes(cdir, com_link):
+    regs = []
+    vdir = cdir / "validacoes"
+    for f in sorted(vdir.glob("*/dados.json")) if vdir.exists() else []:
+        try:
+            a = json.loads(f.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            print("ignorado (JSON inválido):", f)
+            continue
+        a["_pasta"] = f.parent.name
+        if com_link:
+            a["_link"] = "../validacoes/" + "/".join(quote(p) for p in (f.parent.name, "relatorio.html"))
+        regs.append(a)
+    regs.sort(key=lambda a: a.get("data", "") + a.get("hora", ""), reverse=True)
+    return regs
+
+
+def montar(cdir, regs, modo, standalone):
     d = cdir / "diretrizes"
     rtxt = (d / "regras.md").read_text(encoding="utf-8")
     fm = frontmatter(rtxt)
     pers = (d / "personas.md").read_text(encoding="utf-8") if (d / "personas.md").exists() else ""
-    regs = []
-    for sub in ("auditorias", "revisoes"):
-        for f in (cdir / sub).glob("*.json") if (cdir / sub).exists() else []:
-            try:
-                regs.append(json.loads(f.read_text(encoding="utf-8")))
-            except json.JSONDecodeError:
-                print("ignorado (JSON inválido):", f)
-    regs.sort(key=lambda a: a.get("data", ""), reverse=True)
     data = {"cliente": fm.get("cliente", cdir.name), "fm": fm, "regras": regras(rtxt), "fluxo": fluxo(rtxt),
-            "personas": pers, "auditorias": regs, "gerado": datetime.date.today().isoformat()}
+            "personas": pers, "auditorias": regs, "gerado": datetime.date.today().isoformat(), "modo": modo}
     tpl = (ROOT / "scripts" / "portal_template.html").read_text(encoding="utf-8")
     page = (tpl.replace("__CLIENTE__", html.escape(data["cliente"]))
                .replace("__LOGO_LIGHT__", data_uri("aunica-light.png"))
@@ -101,8 +109,25 @@ def main():
                 + page.replace("<!--BODY-->", "</head><body>") + "</body></html>")
     else:
         page = page.replace("<!--BODY-->", "")
+    return page, data
+
+
+def main():
+    args = sys.argv[1:]
+    cdir = pathlib.Path(args[0])
+    if "--relatorio" in args:
+        vpasta = pathlib.Path(args[args.index("--relatorio") + 1])
+        a = json.loads((vpasta / "dados.json").read_text(encoding="utf-8"))
+        page, data = montar(cdir, [a], "relatorio", True)
+        (vpasta / "relatorio.html").write_text(page, encoding="utf-8")
+        print(vpasta / "relatorio.html", "|", len(a.get("achados", [])), "achados")
+        return
+    standalone = "--standalone" in args
+    out = pathlib.Path([a for a in args[1:] if not a.startswith("--")][0])
+    regs = carregar_validacoes(cdir, standalone)
+    page, data = montar(cdir, regs, "portal", standalone)
     out.write_text(page, encoding="utf-8")
-    print(f"{out} | {len(data['regras'])} regras | {len(regs)} revisões e auditorias")
+    print(f"{out} | {len(data['regras'])} regras | {len(regs)} validações")
 
 
 if __name__ == "__main__":

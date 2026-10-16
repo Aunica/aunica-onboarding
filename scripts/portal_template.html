@@ -104,6 +104,23 @@ main .wrap{padding-block:20px 48px;display:grid;gap:18px}
 .prose h3:first-child{margin-top:0}
 .prose ul{margin:4px 0;padding-left:18px}
 .empty{color:var(--muted);padding:18px 16px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;text-transform:none;letter-spacing:0;font:500 .78rem var(--f-body);color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.chartbox{padding:12px 16px 8px;overflow-x:auto}
+.chartbox svg{display:block;width:100%;height:auto;margin:0 auto}
+.chartbox text{fill:var(--muted);font:500 11px var(--f-body)}
+.chartbox .grid{stroke:var(--line);stroke-width:1}
+.chartbox rect.seg{stroke:var(--surface);stroke-width:2}
+.chartbox rect.seg:hover{opacity:.85}
+.hbar{display:grid;grid-template-columns:72px 1fr 44px;gap:8px;align-items:center;margin:6px 0;font-size:.86rem}
+.hbar .t{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.hbar .t b{display:block;height:100%;border-radius:5px;background:var(--accent)}
+.hbar .v{font-variant-numeric:tabular-nums;text-align:right;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+table.vt{width:100%;border-collapse:collapse;font-size:.88rem}
+table.vt th,table.vt td{text-align:left;padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+table.vt th{font:700 .72rem var(--f-display);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-top:0}
+table.vt td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 @media (max-width:640px){
   .rule{grid-template-columns:auto 1fr}.rule .txt{grid-column:1/-1}
   .find{grid-template-columns:1fr}.find .left{grid-auto-flow:column;justify-content:start;align-items:center}
@@ -117,7 +134,8 @@ main .wrap{padding-block:20px 48px;display:grid;gap:18px}
   <nav class="tabs" role="tablist" aria-label="Seções">
     <button role="tab" id="t-regras" aria-selected="true" data-tab="regras">Regras<span class="n" id="n-regras"></span></button>
     <button role="tab" id="t-resumo" aria-selected="false" data-tab="resumo">Pode e não pode</button>
-    <button role="tab" id="t-auditorias" aria-selected="false" data-tab="auditorias">Revisões e auditorias<span class="n" id="n-aud"></span></button>
+    <button role="tab" id="t-auditorias" aria-selected="false" data-tab="auditorias">Validações<span class="n" id="n-aud"></span></button>
+    <button role="tab" id="t-evolucao" aria-selected="false" data-tab="evolucao">Evolução</button>
     <button role="tab" id="t-sobre" aria-selected="false" data-tab="sobre">Público e aprovação</button>
   </nav>
 </div></header>
@@ -147,6 +165,15 @@ main .wrap{padding-block:20px 48px;display:grid;gap:18px}
   <div class="count" id="acount"></div>
   <div id="alist" style="display:grid;gap:14px"></div>
 </section>
+<section class="wrap" id="p-evolucao" hidden>
+  <div class="kpis" id="ekpis"></div>
+  <div class="group"><h2>Achados por validação<span id="elegend" class="legend"></span></h2><div class="chartbox" id="echart"></div></div>
+  <div class="cols">
+    <div class="col"><h3>Regras que mais se repetem</h3><div id="etop"></div></div>
+    <div class="col"><h3>Conformidade por validação</h3><p class="count">Peças sem nenhum ajuste, bloqueio ou pendência.</p><div id="econf"></div></div>
+  </div>
+  <div class="group"><h2>Todas as validações</h2><div class="tablewrap"><table class="vt" id="etable"></table></div></div>
+</section>
 <section class="wrap" id="p-sobre" hidden>
   <div class="cols" id="sobre"></div>
   <div class="prose" id="personas"></div>
@@ -156,6 +183,7 @@ main .wrap{padding-block:20px 48px;display:grid;gap:18px}
 <script id="data" type="application/json">__DATA__</script>
 <script>
 const D=JSON.parse(document.getElementById('data').textContent);
+const dt=a=>(a.data||'').split('-').reverse().join('/')+(a.hora?' '+a.hora:'');
 const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SEV=['BLOQUEIA','AJUSTAR','CONFIRMAR'], SEVL={BLOQUEIA:'Bloqueia',AJUSTAR:'Ajustar',CONFIRMAR:'Confirmar',INFO:'Informativo'};
 $('#cli').textContent=D.cliente;$('#gerado').textContent=D.gerado?(' · atualizado em '+D.gerado.split('-').reverse().join('/')):'';
@@ -163,9 +191,9 @@ $('#meta').textContent=[D.fm.lido_em&&('Lido em '+D.fm.lido_em.split('-').revers
 $('#n-regras').textContent=D.regras.length;
 const totalAch=D.auditorias.reduce((a,x)=>a+x.achados.length,0);$('#n-aud').textContent=totalAch;
 /* tabs */
-function show(t){document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));['regras','resumo','auditorias','sobre'].forEach(p=>$('#p-'+p).hidden=p!==t);try{localStorage.setItem('tab',t)}catch(e){}}
+function show(t){document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));['regras','resumo','auditorias','evolucao','sobre'].forEach(p=>$('#p-'+p).hidden=p!==t);try{localStorage.setItem('tab',t)}catch(e){}}
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{show(b.dataset.tab);history.replaceState(null,'','#'+b.dataset.tab)});
-let start=(location.hash||'').slice(1);if(!['regras','resumo','auditorias','sobre'].includes(start)){try{start=localStorage.getItem('tab')||'regras'}catch(e){start='regras'}}show(start);
+let start=(location.hash||'').slice(1);if(!['regras','resumo','auditorias','evolucao','sobre'].includes(start)){try{start=localStorage.getItem('tab')||'regras'}catch(e){start='regras'}}show(start);
 /* regras */
 let sevF='';
 const sc=$('#sevchips');['',...SEV].forEach(s=>{const b=document.createElement('button');b.className='chip';b.textContent=s?SEVL[s]:'Todas';b.setAttribute('aria-pressed',s===sevF);b.onclick=()=>{sevF=s;sc.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderR()};sc.appendChild(b)});
@@ -185,11 +213,11 @@ $('#resumo').innerHTML=col('Não pode',D.regras.filter(r=>r.sev==='BLOQUEIA'))+c
 /* auditorias */
 let aIdx=0,aSev='';
 if(D.auditorias.length<2)$('#audsel-bar').hidden=true;
-D.auditorias.forEach((a,i)=>$('#audsel').insertAdjacentHTML('beforeend',`<option value="${i}">${esc(a.data.split('-').reverse().join('/'))} · ${esc(a.titulo)}</option>`));
+D.auditorias.forEach((a,i)=>$('#audsel').insertAdjacentHTML('beforeend',`<option value="${i}">${esc(dt(a))} · ${esc(a.titulo)}</option>`));
 $('#audsel').onchange=e=>{aIdx=+e.target.value;aSev='';setupA()};
 function fileUrl(a,n){return a.base_url?a.base_url+n.split('/').map(encodeURIComponent).join('/'):''}
 function setupA(){const a=D.auditorias[aIdx];if(!a){$('#p-auditorias').innerHTML='<div class="note"><p>Nenhuma revisão ou auditoria ainda. As revisões feitas pelo plugin aparecem aqui automaticamente.</p></div>';return}
- $('#audnote').innerHTML=`<p><b>${esc(a.titulo)}</b> · ${esc(a.data.split('-').reverse().join('/'))}${a.pasta_url?` · <a href="${esc(a.pasta_url)}" target="_blank" rel="noopener">abrir pasta</a>`:''}</p><p>${esc(a.escopo)}</p><p>${esc(a.observacao_geral||'')}</p>`;
+ $('#audnote').innerHTML=`<p><b>${esc(a.titulo)}</b> · ${esc(dt(a))}${a.solicitante?' · pedido por '+esc(a.solicitante):''}${a.pecas_total?' · '+(a.pecas_aprovadas||0)+' de '+a.pecas_total+' peças sem ajuste':''}${a._link?` · <a href="${esc(a._link)}">abrir relatório</a>`:''}${a.pasta_url?` · <a href="${esc(a.pasta_url)}" target="_blank" rel="noopener">abrir pasta</a>`:''}</p><p>${esc(a.escopo)}</p><p>${esc(a.observacao_geral||'')}</p>`;
  const cnt={};a.achados.forEach(x=>cnt[x.sev]=(cnt[x.sev]||0)+1);
  $('#kpis').innerHTML=[['','Todos os achados',a.achados.length],...['BLOQUEIA','AJUSTAR','CONFIRMAR','INFO'].filter(s=>cnt[s]).map(s=>[s,SEVL[s],cnt[s]])].map(([s,l,n])=>`<button class="kpi" data-s="${s}" aria-pressed="${s===aSev}"><strong>${n}</strong><span>${l}</span></button>`).join('');
  $('#kpis').querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{aSev=b.dataset.s;$('#kpis').querySelectorAll('.kpi').forEach(k=>k.setAttribute('aria-pressed',k===b));renderA()});
@@ -207,4 +235,33 @@ function renderA(){const a=D.auditorias[aIdx];if(!a)return;const q=norm($('#aq')
 const fm=D.fm;
 $('#sobre').innerHTML=`<div class="col"><h3>Fluxo de aprovação</h3><ul>${D.fluxo.map(l=>`<li>${esc(l)}</li>`).join('')}</ul></div><div class="col"><h3>Contatos e canais</h3><ul>${[fm.contato_marketing&&('Marketing: '+fm.contato_marketing),fm.redes&&('Redes: '+fm.redes),fm.segmento&&('Segmento: '+fm.segmento),fm.fora_de_escopo&&('Fora do escopo: '+fm.fora_de_escopo)].filter(Boolean).map(l=>`<li>${esc(l)}</li>`).join('')}</ul></div>`;
 $('#personas').innerHTML=D.personas.split('\n').map(l=>l.startsWith('# ')?'':l.startsWith('## ')?`<h3>${esc(l.slice(3))}</h3>`:l.startsWith('- ')?`<ul><li>${esc(l.slice(2))}</li></ul>`:l.trim()?`<p>${esc(l)}</p>`:'').join('').replace(/<\/ul><ul>/g,'');
+
+/* evolucao */
+(function(){const V=[...D.auditorias].sort((a,b)=>(a.data+(a.hora||'')).localeCompare(b.data+(b.hora||'')));
+ const SEVS=['BLOQUEIA','AJUSTAR','CONFIRMAR','INFO'],COL={BLOQUEIA:'var(--bloq)',AJUSTAR:'var(--ajus)',CONFIRMAR:'var(--conf)',INFO:'var(--info)'};
+ if(!V.length){$('#p-evolucao').innerHTML='<div class="note"><p>A evolução aparece depois da primeira validação.</p></div>';return}
+ const cnt=a=>{const c={};SEVS.forEach(s=>c[s]=0);a.achados.forEach(x=>c[x.sev]=(c[x.sev]||0)+1);return c};
+ const conf=a=>a.pecas_total?Math.round(100*(a.pecas_aprovadas||0)/a.pecas_total):null;
+ const last=V[V.length-1],first=V[0],tot=V.reduce((n,a)=>n+a.achados.filter(x=>x.sev!=='INFO').length,0);
+ const lc=conf(last),fc=conf(first);
+ $('#ekpis').innerHTML=[[V.length,'validações'],[tot,'pontos a corrigir no total'],[lc==null?'-':lc+'%','conformidade na última'],[V.length>1&&lc!=null&&fc!=null?((lc-fc>=0?'+':'')+(lc-fc)+' p.p.'):'-','desde a primeira']].map(([n,l])=>`<div class="kpi" style="cursor:default"><strong>${n}</strong><span>${l}</span></div>`).join('');
+ $('#elegend').innerHTML=SEVS.map(s=>`<span><i style="background:${COL[s]}"></i>${SEVL[s]}</span>`).join('');
+ const W=Math.max(520,V.length*90+60),H=220,pl=34,pb=34,pt=10,ih=H-pb-pt;
+ const mx=Math.max(4,...V.map(a=>a.achados.length));const step=Math.ceil(mx/4);const top=step*4;
+ let g='';for(let i=0;i<=4;i++){const v=i*step,y=pt+ih-ih*v/top;g+=`<line class="grid" x1="${pl}" x2="${W-8}" y1="${y}" y2="${y}"/><text x="${pl-6}" y="${y+4}" text-anchor="end">${v}</text>`}
+ const bw=Math.min(44,(W-pl-20)/V.length*0.55);
+ V.forEach((a,i)=>{const cx=pl+(i+0.5)*(W-pl-12)/V.length,c=cnt(a);let y=pt+ih;
+  SEVS.forEach(s=>{if(!c[s])return;const h=ih*c[s]/top;y-=h;g+=`<rect class="seg" x="${cx-bw/2}" y="${y}" width="${bw}" height="${h}" rx="3" style="fill:${COL[s]}"><title>${esc(dt(a))} · ${esc(a.titulo)}: ${c[s]} ${SEVL[s].toLowerCase()}</title></rect>`});
+  g+=`<text x="${cx}" y="${H-pb+16}" text-anchor="middle">${esc((a.data||'').split('-').reverse().slice(0,2).join('/'))}${a.hora?' '+esc(a.hora):''}</text>`;
+  g+=`<text x="${cx}" y="${y-5}" text-anchor="middle" style="fill:var(--ink)">${a.achados.length}</text>`});
+ $('#echart').innerHTML=`<svg style="max-width:${W}px" viewBox="0 0 ${W} ${H}" role="img" aria-label="Achados por validação, por gravidade">${g}</svg>`;
+ const rc={};V.forEach(a=>a.achados.forEach(x=>{if(x.sev!=='INFO'&&/^[A-Z]{2,5}-\d{2}$/.test(x.regra))rc[x.regra]=(rc[x.regra]||0)+1}));
+ const tops=Object.entries(rc).sort((a,b)=>b[1]-a[1]).slice(0,8),mt=tops.length?tops[0][1]:1;
+ $('#etop').innerHTML=tops.length?tops.map(([r,n])=>{const rg=D.regras.find(x=>x.id===r);return `<div class="hbar" title="${esc(rg?rg.texto:r)}"><button class="linkrule" data-r="${r}">${r}</button><span class="t"><b style="width:${100*n/mt}%"></b></span><span class="v">${n}</span></div>`}).join(''):'<p class="count">Nenhuma regra repetida ainda.</p>';
+ $('#etop').querySelectorAll('.linkrule').forEach(b=>b.onclick=()=>goRule(b.dataset.r));
+ $('#econf').innerHTML=V.map(a=>{const c=conf(a);return `<div class="hbar"><span class="v" style="text-align:left">${esc((a.data||'').split('-').reverse().slice(0,2).join('/'))}</span><span class="t"><b style="width:${c||0}%;background:var(--teal)"></b></span><span class="v">${c==null?'-':c+'%'}</span></div>`}).join('');
+ $('#etable').innerHTML='<tr><th>Quando</th><th>O que foi validado</th><th>Quem pediu</th><th>Peças</th><th>Bloq.</th><th>Ajust.</th><th>Conf.</th><th>Info</th><th>Relatório</th></tr>'+[...V].reverse().map(a=>{const c=cnt(a);return `<tr><td class="n">${esc(dt(a))}</td><td>${esc(a.titulo)}</td><td>${esc(a.solicitante||'')}</td><td class="n">${a.pecas_total?(a.pecas_aprovadas||0)+'/'+a.pecas_total:''}</td><td class="n">${c.BLOQUEIA}</td><td class="n">${c.AJUSTAR}</td><td class="n">${c.CONFIRMAR}</td><td class="n">${c.INFO}</td><td>${a._link?`<a href="${esc(a._link)}">abrir</a>`:esc(a._pasta||'')}</td></tr>`}).join('');
+})();
+/* modo relatorio */
+if(D.modo==='relatorio'){document.querySelector('h1').innerHTML='Validação <span>'+esc(D.cliente)+'</span>';['t-resumo','t-evolucao','t-sobre'].forEach(i=>$('#'+i).hidden=true);$('#audsel-bar').hidden=true;$('#t-auditorias').firstChild.textContent='Relatório';if(!location.hash)show('auditorias')}
 </script>
