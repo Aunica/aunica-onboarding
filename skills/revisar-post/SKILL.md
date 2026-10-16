@@ -27,5 +27,5 @@ TXT, POST, CTA, SOL, CAS, SEN; com arte também MAR, IMG, SEL; carrossel também
 
 ## Entrega
 Parecer no formato de `metodo/parecer.md`. Legenda corrigida pronta para colar, com assinatura e hashtags. Para a arte, lista de ajustes para o designer.
-Gravar a revisão em `<workspace>/clientes/<slug>/revisoes/` (um .md para ler e um .json para o portal, formato em `metodo/parecer.md`), acrescentar uma linha em `historico/log.md` e atualizar o portal do cliente (função `portal-cliente`).
+Registrar a validação como manda `metodo/parecer.md`: pasta nova em `<workspace>/clientes/<slug>/validacoes/` com `relatorio.html`, `pecas-corrigidas/` (a versão corrigida) e `dados.json`, e atualizar o portal do cliente (função `portal-cliente`).
 Fechar com a pergunta de próximo passo.
