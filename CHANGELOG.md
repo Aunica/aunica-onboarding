@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 (2026-10-16)
+- Uma pasta por validação, com data e hora no nome: relatorio.html, pecas-corrigidas/ e dados.json. Saem auditorias/, revisoes/, reports/ e log.md.
+- Nova aba Evolução no portal: achados por validação, conformidade, regras que mais se repetem e lista de todas as validações.
+- Relatório individual de cada validação (gerar_portal.py --relatorio).
+
 ## 0.3.0 (2026-10-15)
 - Repositório público só com o motor: dados de cliente saem do plugin e ficam na pasta Onboarding Clientes (`config/workspace.md`).
 - `cliente.json` por cliente com as pastas de referência e as pastas de peças a validar.

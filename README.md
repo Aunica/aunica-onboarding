@@ -18,7 +18,8 @@ Este repositório é público e tem só o motor. Regras, referências, revisões
 Onboarding Clientes/clientes/<cliente>/
   cliente.json        onde está o material de referência e onde estão as peças a validar
   diretrizes/         regras.md, personas.md, fontes.md e o portal HTML
-  revisoes/  auditorias/  reports/  historico/log.md
+  validacoes/         uma pasta por validação, com data e hora: relatorio.html, pecas-corrigidas/, dados.json
+  criacoes/           peças e briefings criados pelo plugin
 ```
 
 ## Funções
@@ -50,7 +51,7 @@ config/workspace.md     onde o plugin procura os dados dos clientes
 modelo-cliente/         modelo de pasta de cliente novo
 scripts/                gerador do portal HTML
 assets/                 logos da aunica usados no portal
-exemplos/               exemplo fictício de auditoria
+exemplos/               exemplo fictício de validação
 ```
 
 ## Formato das regras
