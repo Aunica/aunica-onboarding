@@ -1,6 +1,6 @@
 ---
 name: portal-cliente
-description: Gera ou atualiza o portal HTML de diretrizes de um cliente, com logo da aunica, busca, filtros por severidade, tipo de peça e bloco, resumo pode e não pode e todas as revisões e auditorias. Use quando pedirem a página das diretrizes, o portal do cliente, um link para o time consultar, ou depois de revisar uma peça ou auditar uma pasta.
+description: Gera ou atualiza o portal HTML de diretrizes de um cliente, com logo da aunica, busca, filtros por severidade, tipo de peça e bloco, resumo pode e não pode e todas as validações e a evolução do time. Use quando pedirem a página das diretrizes, o portal do cliente, um link para o time consultar, ou depois de qualquer validação.
 ---
 
 # Portal do cliente
